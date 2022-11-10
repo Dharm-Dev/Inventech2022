@@ -46,7 +46,7 @@ public class FileOrganizeMechanism {
         for (File file : fileList) {
             if (file != null) {
                 BasicFileAttributes attr = Files.readAttributes(file.toPath(), BasicFileAttributes.class);
-                LocalDateTime time = attr.creationTime()
+                LocalDateTime time = attr.lastModifiedTime()
                         .toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime();
