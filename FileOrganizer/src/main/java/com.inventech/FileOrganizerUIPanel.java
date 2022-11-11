@@ -30,10 +30,10 @@ public class FileOrganizerUIPanel extends JPanel {
         frame.setMinimumSize(new Dimension(600, 450));
 
         titleText = Box.createHorizontalBox();
-        JLabel title = new JLabel("<html><span style='color: teal;'>File Organizer</span><hr /></html>");
+        JLabel title = new JLabel("<html><span style='color: teal;'>&nbsp;&nbsp;File Organizer&nbsp;&nbsp;</span><hr /></html>");
         title.setFont(title.getFont().deriveFont(64.0f));
-        JLabel version = new JLabel("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version 1.0<br>Created by Wizards</html>");
-        JLabel slogan = new JLabel("<html>File Organizer<br>Sorting files Based on Year and Month</html>");
+        JLabel version = new JLabel("<html>Created by Wizards<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version 1.0</html>");
+        JLabel slogan = new JLabel("<html>Sorting files Based on Year and Month</html>");
         titleText.add(version);
         titleText.add(title);
         titleText.add(slogan);

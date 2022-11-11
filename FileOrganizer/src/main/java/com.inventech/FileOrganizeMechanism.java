@@ -1,8 +1,11 @@
 package com.inventech;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.Time;
 import java.time.Instant;
@@ -52,6 +55,7 @@ public class FileOrganizeMechanism {
                         .toLocalDateTime();
                 int year = time.getYear();
                 String month = time.getMonth().name();
+                month = WordUtils.capitalizeFully(month);
                 fileMover(file, toPath, year, month);
                 fileCount++;
             }
@@ -70,6 +74,6 @@ public class FileOrganizeMechanism {
             boolean res = directory.mkdir();
         }
         String to = directory + "\\" + fileName;
-        Files.move(file.toPath(), Path.of(to));
+        Files.move(file.toPath(), Path.of(to), StandardCopyOption.REPLACE_EXISTING);
     }
 }
