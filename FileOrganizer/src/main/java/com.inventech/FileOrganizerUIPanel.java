@@ -80,10 +80,12 @@ public class FileOrganizerUIPanel extends JPanel {
             chooser.showSaveDialog(null);
             chooser.setAcceptAllFileFilterUsed(false);
             fromPath = new File(chooser.getSelectedFile().getAbsolutePath());
-            ackFlag = false;
-            destinationFlag = true;
-            saveFolderButton.setVisible(destinationFlag);
-            ack.setVisible(ackFlag);
+            if(fromPath!=null){
+                ackFlag = false;
+                destinationFlag = true;
+                saveFolderButton.setVisible(destinationFlag);
+                ack.setVisible(ackFlag);
+            }
         });
 
         saveFolderButton.addActionListener(actionListener -> {
@@ -92,8 +94,10 @@ public class FileOrganizerUIPanel extends JPanel {
             chooser.showSaveDialog(null);
             chooser.setAcceptAllFileFilterUsed(false);
             toPath = new File(chooser.getSelectedFile().getAbsolutePath());
-            startFlag = true;
-            fileOrganizerButton.setVisible(startFlag);
+            if(toPath!=null){
+                startFlag = true;
+                fileOrganizerButton.setVisible(startFlag);
+            }
         });
 
         fileOrganizerButton.addActionListener(actionListener -> {
