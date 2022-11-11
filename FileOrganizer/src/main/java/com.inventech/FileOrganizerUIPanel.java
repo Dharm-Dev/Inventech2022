@@ -1,7 +1,6 @@
 package com.inventech;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +9,7 @@ public class FileOrganizerUIPanel extends JPanel {
 
     private boolean startFlag = false;
     private boolean destinationFlag = false;
-    private boolean ackFlag = false;
+    private boolean ackFlag = true;
     private final JButton selectFolderButton;
     private final JButton saveFolderButton;
     private final JButton fileOrganizerButton;
@@ -27,14 +26,14 @@ public class FileOrganizerUIPanel extends JPanel {
         frame = new JFrame("File Organizer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
-        frame.setPreferredSize(new Dimension(750, 375));
+        frame.setPreferredSize(new Dimension(800, 375));
         frame.setMinimumSize(new Dimension(600, 450));
 
         titleText = Box.createHorizontalBox();
-        JLabel title = new JLabel("<html><span style='color: teal;'>File Organizer</span></html>");
+        JLabel title = new JLabel("<html><span style='color: teal;'>File Organizer</span><hr /></html>");
         title.setFont(title.getFont().deriveFont(64.0f));
-        JLabel version = new JLabel("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version 1.0<br>Created by Wizard</html>");
-        JLabel slogan = new JLabel("<html>File Organizer<br>Sorting files Based on Year</html>");
+        JLabel version = new JLabel("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version 1.0<br>Created by Wizards</html>");
+        JLabel slogan = new JLabel("<html>File Organizer<br>Sorting files Based on Year and Month</html>");
         titleText.add(version);
         titleText.add(title);
         titleText.add(slogan);
@@ -42,7 +41,7 @@ public class FileOrganizerUIPanel extends JPanel {
 
         selectFolderButton = new JButton("Browse");
 
-        ack = new JLabel("<html><span style='color: blue;'>File Organized Successfully!</span></html>");
+        ack = new JLabel("<html><span style='color: blue;'>Select source folder to proceed &nbsp;</span></html>");
         ack.setFont(ack.getFont().deriveFont(14.0f));
         ack.setVisible(ackFlag);
 
@@ -54,12 +53,12 @@ public class FileOrganizerUIPanel extends JPanel {
 
         inputContent = Box.createHorizontalBox();
         inputContent.setBackground(Color.white);
+        inputContent.add(ack);
         inputContent.add(selectFolderButton);
         inputContent.add(saveFolderButton);
 
         mainContent = Box.createHorizontalBox();
         mainContent.add(fileOrganizerButton);
-        mainContent.add(ack);
     }
 
     public JFrame showPanel() {
@@ -105,6 +104,7 @@ public class FileOrganizerUIPanel extends JPanel {
                 ackFlag = true;
                 saveFolderButton.setVisible(destinationFlag);
                 fileOrganizerButton.setVisible(startFlag);
+                ack.setText("<html><span style='color: blue;'>File Organized Successfully!</span><p> Source Path: "+fromPath+"<br> Destination Path: "+toPath+"</html>");
                 ack.setVisible(ackFlag);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
