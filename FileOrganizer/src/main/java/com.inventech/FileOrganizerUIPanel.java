@@ -1,12 +1,16 @@
 package com.inventech;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.DefaultMenuLayout;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class FileOrganizerUIPanel extends JPanel{
+public class FileOrganizerUIPanel extends JPanel {
 
+    private boolean startFlag = false;
+    private boolean destinationFlag = false;
+    private boolean ackFlag = false;
     private final JButton selectFolderButton;
     private final JButton saveFolderButton;
     private final JButton fileOrganizerButton;
@@ -14,54 +18,98 @@ public class FileOrganizerUIPanel extends JPanel{
     private File fromPath;
     private File toPath;
     private final JFrame frame;
+    private final Box inputContent;
+    private final Box titleText;
+    private final Box mainContent;
+    private final JLabel ack;
+
     FileOrganizerUIPanel() {
         frame = new JFrame("File Organizer");
-        JFrame.setDefaultLookAndFeelDecorated(true);
-        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new FlowLayout());
+        frame.setPreferredSize(new Dimension(750, 375));
+        frame.setMinimumSize(new Dimension(600, 450));
+
+        titleText = Box.createHorizontalBox();
+        JLabel title = new JLabel("<html><span style='color: teal;'>File Organizer</span></html>");
+        title.setFont(title.getFont().deriveFont(64.0f));
+        JLabel version = new JLabel("<html>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Version 1.0<br>Created by Wizard</html>");
+        JLabel slogan = new JLabel("<html>File Organizer<br>Sorting files Based on Year</html>");
+        titleText.add(version);
+        titleText.add(title);
+        titleText.add(slogan);
+        titleText.setAlignmentX(frame.getWidth() / 2);
 
         selectFolderButton = new JButton("Browse");
+
+        ack = new JLabel("<html><span style='color: blue;'>File Organized Successfully!</span></html>");
+        ack.setFont(ack.getFont().deriveFont(14.0f));
+        ack.setVisible(ackFlag);
+
         saveFolderButton = new JButton("Select destination");
+        saveFolderButton.setVisible(destinationFlag);
+
         fileOrganizerButton = new JButton("Start File Organizing...");
+        fileOrganizerButton.setVisible(startFlag);
+
+        inputContent = Box.createHorizontalBox();
+        inputContent.setBackground(Color.white);
+        inputContent.add(selectFolderButton);
+        inputContent.add(saveFolderButton);
+
+        mainContent = Box.createHorizontalBox();
+        mainContent.add(fileOrganizerButton);
+        mainContent.add(ack);
     }
 
     public JFrame showPanel() {
-        selectFolderButton.setBounds(20, 100, 95, 30);
-        selectFolderButton.addActionListener(actionListener ->{
-                chooser = new JFileChooser();
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setDialogTitle("Select source folder");
-        chooser.showSaveDialog(null);
-        chooser.setAcceptAllFileFilterUsed(false);
-        fromPath = new File(chooser.getSelectedFile().getAbsolutePath());
+        addListeners();
+        frame.add(titleText);
+        frame.add(inputContent);
+        frame.add(mainContent);
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        return frame;
+    }
+
+    private void addListeners() {
+        selectFolderButton.addActionListener(actionListener -> {
+            chooser = new JFileChooser();
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            chooser.setDialogTitle("Select source folder");
+            chooser.showSaveDialog(null);
+            chooser.setAcceptAllFileFilterUsed(false);
+            fromPath = new File(chooser.getSelectedFile().getAbsolutePath());
+            ackFlag = false;
+            destinationFlag = true;
+            saveFolderButton.setVisible(destinationFlag);
+            ack.setVisible(ackFlag);
         });
-        frame.add(selectFolderButton);
 
-        JLabel jLabel = new JLabel("Team: Wizards");
-        jLabel.setLabelFor(selectFolderButton);
-        frame.add(jLabel);
-
-        saveFolderButton.setBounds(20, 100, 95, 30);
         saveFolderButton.addActionListener(actionListener -> {
             chooser.setDialogTitle("select destination folder");
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.showSaveDialog(null);
             chooser.setAcceptAllFileFilterUsed(false);
             toPath = new File(chooser.getSelectedFile().getAbsolutePath());
+            startFlag = true;
+            fileOrganizerButton.setVisible(startFlag);
         });
-        frame.add(saveFolderButton);
 
-
-        fileOrganizerButton.setBounds(20, 200, 95, 30);
         fileOrganizerButton.addActionListener(actionListener -> {
             try {
                 FileOrganizeMechanism.startFileProcessing(getFromPath(), getToPath());
+                destinationFlag = false;
+                startFlag = false;
+                ackFlag = true;
+                saveFolderButton.setVisible(destinationFlag);
+                fileOrganizerButton.setVisible(startFlag);
+                ack.setVisible(ackFlag);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
-        frame.add(fileOrganizerButton);
-        return frame;
     }
 
     public File getFromPath() {

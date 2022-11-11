@@ -51,16 +51,21 @@ public class FileOrganizeMechanism {
                         .atZone(ZoneId.systemDefault())
                         .toLocalDateTime();
                 int year = time.getYear();
-                fileMover(file, toPath, year);
+                String month = time.getMonth().name();
+                fileMover(file, toPath, year, month);
                 fileCount++;
             }
         }
         return fileCount;
     }
 
-    private static void fileMover(File file, File toPath, int year) throws IOException {
+    private static void fileMover(File file, File toPath, int year, String month) throws IOException {
         String fileName = file.getName();
-        File directory = new File(toPath.getPath() + "\\" + year);
+        File directoryYear = new File(toPath.getPath() + "\\" + year);
+        if (!directoryYear.exists()) {
+            boolean res = directoryYear.mkdir();
+        }
+        File directory = new File(directoryYear.toPath() + "\\" + month);
         if (!directory.exists()) {
             boolean res = directory.mkdir();
         }
